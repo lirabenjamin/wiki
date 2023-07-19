@@ -1,0 +1,129 @@
+---
+title: "Network Analysis"
+toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+
+This is a summary of all I know about network analysis.
+
+# The basics
+
+Network data is data where the observations are connected to each other. This can be a social network, where the observations are people and the connections are friendships. It can also be a spatial network, where the observations are locations and the connections are roads. It can also be a network of words, where the observations are words and the connections are the co-occurrence of words in a text.
+
+## Glossary
+
+a **node** is an observation in a network. For example, a person in a social network. Also known as a **vertex**. Nodes have attributes (e.g., that person's GPA)
+
+an **edge** is a connection between two nodes. For example, a friendship between two people in a social network. Also known as a **link**. Edges have weights (e.g., the strength of the friendship, frequency of communication)
+
+a **network** is a set of nodes and edges. Also known as a **graph**.
+
+Networks can be represented as **adjacency matrices**. An adjacency matrix is a matrix where the rows and columns are nodes, and the cells are the edges between the nodes. For example, if we have a network of 3 people, A, B, and C, and A is friends with B and C, and B is friends with C, the adjacency matrix would look like this:
+
+```
+  A B C
+A 0 1 1
+B 1 0 1
+C 1 1 0
+``` 
+
+Networks can also be represented as **edge lists**. An edge list is a list of edges. For example, if we have a network of 3 people, A, B, and C, and A is friends with B and C, and B is friends with C, the edge list would look like this:
+
+```
+A B
+A C
+B C
+```
+
+a **network statistic** is a number that describes a network. For example, the number of nodes in a network.
+
+## Two kinds of networks
+
+### One mode and two mode networks
+
+**One mode networks** are networks where the relationships are between units of the same kinds. For example, people connected to other people.
+
+**Two mode networks** are networks where the relationships are between units of different kinds. For example, people connected to insititutions.
+
+If you multiply the adjacency matrix of a two mode network with its transpose, you get the adjacency matrix of a one mode network. 
+
+$$A*A^T = A'$$ You retain the connections between the rows
+
+This is called **projecting** the network. For example, if you have a network of people (rows) connected to institutions (columns), and you multiply the adjacency matrix of that network with its transpose, you get a network of people connected to other people (i.e., they are connected if they belong to the same institution). If you do the operation in the other direction, you get a network of institutions connected to other institutions (they are connected if a person is connected to both institutions).
+
+$$A^T*A = A''$$ You retain the connections between the columns
+
+### Directed and undirected networks
+
+**Directed networks** are networks with direction. For example, if A says B is their friend, that would be a directed network
+
+**Undirected networks** are networks without direction. For example, if A and B are coauthors in the same paper, that would be an undirected network.
+
+
+# Descriptives
+
+## Network Descriptives
+
+- Connectivity: How much of the network is connected. Fully connected to not connected at all.
+
+## Node Descriptives
+
+- Centrality: How important is a node. There are several different kinds of centrality, such as degree centrality, closeness centrality, and betweenness centrality.
+- Local clustering: How many of a node's neighbors are connected to each other.
+- Homophily and Heterophily: How similar or different are a node's neighbors to the node. 
+  
+
+## Edge Descriptives
+
+There must be but I don't know them!
+
+# Analysis
+
+## Clustering
+
+There are a bunch of algorithms for clustering networks. The most common one is probably the Louvain algorithm. 
+
+```{r}
+library(igraph)
+library(ggraph)
+library(tidygraph)
+
+# Load required library
+library(igraph)
+
+# Generate a random graph using Erdos-Reyni model
+g <- erdos.renyi.game(50, 0.1)
+
+# Find the community structure using fast greedy method
+community <- cluster_fast_greedy(g)
+
+# Layout the graph using Fruchterman-Reingold algorithm
+layout <- layout_with_fr(g)
+
+# Plot the graph with communities
+plot(community, g, layout = layout)
+```
+
+## Correlation between two networks
+
+If you have two networks, you can calculate the correlation between them. This is called **network alignment**. There are several different ways to do this. 
+
+## Testing spatial autocorrelation (Moran's I)
+
+If you have a network, with some associated outcome, you can test the spatial autocorrelation of the outcome. This is called **Moran's I**. It is interpreted like a correlation coefficient. Values close to 1 indicate that the outcome of people is similar to the outcome of others similar in the network, values close to -1 indicate that they are more likely to be different.
+
+## Spatial Auto-Regressive Models
+
+SAR models are regression models that take into account the spatial autocorrelation of the outcome. They are used when the outcome is spatially autocorrelated.
+
+Why use them? Because linear models require that the errors are independent. If they are not, the standard errors are wrong. SAR models take into account the spatial autocorrelation of the outcome, and therefore the standard errors are correct.
+
+You can use SAR models and then look at Moran's I for the residuals to see if the model is good. If the residuals are autocorrelated, you can use a SAR model with a spatial lag of the outcome as a predictor.
+
+## SAR models with geography
+
+We saw some of this, but won't summarise here. Unlikely I will use this in the near term.
