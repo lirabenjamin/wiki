@@ -42,6 +42,8 @@ B C
 
 a **network statistic** is a number that describes a network. For example, the number of nodes in a network.
 
+A **neighborhood** is a subset of nodes in a network. For example, the neighborhood of A in the network above is B and C. The order of the neighborhood is how many connections away you are looking. This can be based on incoming connections, outgoing connections, or both.
+
 ## Two kinds of networks
 
 ### One mode and two mode networks
