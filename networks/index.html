@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Benjamin Lira Luttges and ChatGPT">
 
 <title>Network Analysis</title>
 <style>
@@ -98,7 +99,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a>
   <ul class="collapse">
-  <li><a href="#clustering" id="toc-clustering" class="nav-link" data-scroll-target="#clustering">Clustering</a></li>
+  <li><a href="#clustering-or-community-detection" id="toc-clustering-or-community-detection" class="nav-link" data-scroll-target="#clustering-or-community-detection">Clustering or Community Detection</a></li>
   <li><a href="#correlation-between-two-networks" id="toc-correlation-between-two-networks" class="nav-link" data-scroll-target="#correlation-between-two-networks">Correlation between two networks</a></li>
   <li><a href="#testing-spatial-autocorrelation-morans-i" id="toc-testing-spatial-autocorrelation-morans-i" class="nav-link" data-scroll-target="#testing-spatial-autocorrelation-morans-i">Testing spatial autocorrelation (Moran’s I)</a></li>
   <li><a href="#spatial-auto-regressive-models" id="toc-spatial-auto-regressive-models" class="nav-link" data-scroll-target="#spatial-auto-regressive-models">Spatial Auto-Regressive Models</a></li>
@@ -118,6 +119,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Benjamin Lira Luttges and ChatGPT </p>
+          </div>
+  </div>
     
   
     
@@ -170,6 +177,8 @@ B C</code></pre>
 <h2 class="anchored" data-anchor-id="network-descriptives">Network Descriptives</h2>
 <ul>
 <li>Connectivity: How much of the network is connected. Fully connected to not connected at all.</li>
+<li>Modularity: How separated are the different groups in the network.</li>
+<li>Diameter and Average Path Length: Diameter is the longest shortest path in the network, while average path length is the average of all shortest paths. These measures are important for understanding the spread of information or diseases in the network, among other things.</li>
 </ul>
 </section>
 <section id="node-descriptives" class="level2">
@@ -187,8 +196,8 @@ B C</code></pre>
 </section>
 <section id="analysis" class="level1">
 <h1>Analysis</h1>
-<section id="clustering" class="level2">
-<h2 class="anchored" data-anchor-id="clustering">Clustering</h2>
+<section id="clustering-or-community-detection" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-or-community-detection">Clustering or Community Detection</h2>
 <p>There are a bunch of algorithms for clustering networks. The most common one is probably the Louvain algorithm.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
@@ -213,6 +222,7 @@ B C</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>The thing community detection is trying to optimize is <strong>modularity</strong> or <strong>Q</strong>. Modularity is a measure of how separated the communities are.</p>
 </section>
 <section id="correlation-between-two-networks" class="level2">
 <h2 class="anchored" data-anchor-id="correlation-between-two-networks">Correlation between two networks</h2>

@@ -1,5 +1,6 @@
 ---
 title: "Network Analysis"
+author: Benjamin Lira Luttges and ChatGPT
 toc: true
 ---
 
@@ -69,6 +70,8 @@ $$A^T*A = A''$$ You retain the connections between the columns
 ## Network Descriptives
 
 - Connectivity: How much of the network is connected. Fully connected to not connected at all.
+- Modularity: How separated are the different groups  in the network.
+- Diameter and Average Path Length: Diameter is the longest shortest path in the network, while average path length is the average of all shortest paths. These measures are important for understanding the spread of information or diseases in the network, among other things.
 
 ## Node Descriptives
 
@@ -83,7 +86,7 @@ There must be but I don't know them!
 
 # Analysis
 
-## Clustering
+## Clustering or Community Detection
 
 There are a bunch of algorithms for clustering networks. The most common one is probably the Louvain algorithm. 
 
@@ -107,6 +110,8 @@ layout <- layout_with_fr(g)
 # Plot the graph with communities
 plot(community, g, layout = layout)
 ```
+
+The thing community detection is trying to optimize is **modularity** or **Q**. Modularity is a measure of how separated the communities are.
 
 ## Correlation between two networks
 

@@ -1,0 +1,76 @@
+## Contagion and Diffusion (Pure ChatGPT)
+
+### Diffusion and Contagion Processes
+
+Diffusion and contagion processes refer to the spread of something across a network. This could be information, behaviors, or diseases.
+
+### Simple diffusion model
+
+A simple diffusion model might work like this: start with one node in the network that is "infected", and in each time step, every neighbor of an infected node has a certain probability of becoming infected. This could model the spread of a rumor in a social network, or a disease in a population.
+
+Let's implement a simple diffusion model in R.
+
+```{r}
+library(igraph)
+
+# Create a random graph
+g <- sample_gnp(100, 0.05)
+
+# Initialize a vector to store the state of each node (infected or not)
+state <- rep("susceptible", vcount(g))
+
+# Infect a random node
+state[sample(1:vcount(g), 1)] <- "infected"
+
+# Propagation step
+propagate <- function(g, state, infect_prob = 0.1) {
+  for (i in 1:vcount(g)) {
+    if (state[i] == "infected") {
+      neighbors <- neighbors(g, i)
+      for (j in neighbors) {
+        if (state[j] == "susceptible" && runif(1) < infect_prob) {
+          state[j] <- "infected"
+        }
+      }
+    }
+  }
+  state
+}
+
+# Run the propagation for 5 steps
+for (i in 1:5) {
+  state <- propagate(g, state)
+  cat("After", i, "steps,", sum(state == "infected"), "nodes are infected.\n")
+}
+```
+This will output the number of infected nodes after each propagation step.
+
+### Visualizing Diffusion Processes
+
+To visualize the diffusion, we can use the ndtv package. This package provides tools to generate, animate, and embed videos of network dynamics in the R environment. Here is an example:
+
+```{r}
+library(ndtv)
+library(networkDynamic)
+
+# Convert the igraph object to a networkDynamic object
+net <- network::network.initialize(0, directed = FALSE)
+networkDynamic::network.dyadcount(net) <- length(E(g))
+add.edges <- get.edgelist(g)
+net <- network::add.edges(net, tail=add.edges[,1], head=add.edges[,2])
+
+# Define the diffusion process
+diffusion <- networkDynamic::activate.edges(net, onset = c(1, rep(2, length(E(g)) - 1)), terminus = Inf)
+
+# Initialize the plot
+plot(net, displaylabels = TRUE, vertex.cex = 2, label.pos = 5, main = "Network Diffusion")
+
+# Add the diffusion process
+ndtv::render.animation(diffusion, verbose = FALSE)
+```
+
+The output will be an animation of the diffusion process over time.
+
+### Real-world applications
+
+In epidemiology, more complex models can be used to simulate the spread of diseases, taking into account various factors such as the infectiousness of the disease, the susceptibility of individuals, and the structure of the population. In social networks, diffusion models can help understand the spread of information, behaviors, or innovations.
